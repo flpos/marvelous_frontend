@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 
 export const Image = styled.img`
   height: calc(100vh - 42px);
-  position: fixed;
+  position: absolute;
   right: 50%;
 `;
 
@@ -20,7 +20,7 @@ export const Info = styled.section`
   position: absolute;
   left: 50%;
   right: 0px;
-  height: calc(100vh - 42px);
+  min-height: calc(100vh - 42px);
   background-color: #303030;
 `;
 
