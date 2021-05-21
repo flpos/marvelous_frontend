@@ -21,7 +21,10 @@ const CharacterItem = ({ data, isFavorite, onFavoriteClick }: Props) => {
       <ItemTitle>{data.name}</ItemTitle>
       <Button
         isFavorite={isFavorite}
-        onClick={() => onFavoriteClick(isFavorite, data.id)}
+        onClick={(event) => {
+          event.stopPropagation();
+          onFavoriteClick(isFavorite, data.id);
+        }}
       >
         {isFavorite ? 'remover' : 'favoritar'}
       </Button>
