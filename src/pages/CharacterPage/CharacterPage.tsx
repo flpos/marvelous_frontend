@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 import {
   FavButton,
   Image,
   Info,
-  Wrapper,
+  PageLink,
+  Wrapper
 } from '../../components/CommonPageStyles/styles';
 import FavoriteService from '../../services/favorite';
 import MarvelService from '../../services/marvel';
@@ -82,9 +82,11 @@ const CharacterPage = () => {
         <div>
           {comics.map((comic) => (
             <div key={comic.name}>
-              <Link to={`/comics/${comic.resourceURI.split('/').slice(-1)[0]}`}>
+              <PageLink
+                to={`/comics/${comic.resourceURI.split('/').slice(-1)[0]}`}
+              >
                 {comic.name}
-              </Link>
+              </PageLink>
             </div>
           ))}
         </div>
