@@ -135,6 +135,7 @@ const Favorites = () => {
             <>
               {characterData.slice(offset, offset + limit).map((data) => (
                 <CharacterItem
+                  key={data.id}
                   data={data}
                   isFavorite={true}
                   onFavoriteClick={(_, id) => deleteFavorite(id)}
@@ -145,6 +146,7 @@ const Favorites = () => {
             <>
               {comicData.slice(offset, offset + limit).map((data) => (
                 <ComicItem
+                  key={data.id}
                   data={data}
                   isFavorite={true}
                   onFavoriteClick={(_, id) => deleteFavorite(id)}
