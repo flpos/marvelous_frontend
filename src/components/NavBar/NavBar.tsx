@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { logoutAction } from '../../store/auth/actions';
 import Button from '../Button';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ shrink: boolean }>`
   background-color: #202020;
   height: 42px;
   display: flex;
@@ -34,6 +34,41 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
   }
+  #menu {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    > *:first-child,
+    > *:last-child {
+      position: unset;
+      display: flex;
+      width: 100%;
+      height: 42px;
+    }
+    a {
+      height: 42px;
+      min-height: 42px;
+      flex: 1;
+    }
+    #menu {
+      display: block;
+      position: absolute;
+      height: 42px;
+      right: 0px;
+      top: 0px;
+    }
+    height: unset;
+    ${({ shrink }) =>
+      shrink &&
+      css`
+        height: 42px;
+        overflow: hidden;
+      `}
+  }
 `;
 
 const Link = styled(NavLink)`
@@ -54,16 +89,23 @@ const NavBar = () => {
     dispatch(logoutAction());
   };
 
+  const [shrink, setShrink] = React.useState(false);
+
   return (
-    <Wrapper>
-      <Link to='/panel'>Usuário</Link>
-      <Link to='/comics-search'>Quadrinhos</Link>
-      <Link to='/' exact>
-        Favoritos
-      </Link>
-      <Link to='/characters-search'>Personagens</Link>
-      <Button onClick={handleLogout}>Sair</Button>
-    </Wrapper>
+    <>
+      <Wrapper shrink={shrink}>
+        <Link to='/panel'>Usuário</Link>
+        <Link to='/comics-search'>Quadrinhos</Link>
+        <Link to='/' exact>
+          Favoritos
+        </Link>
+        <Link to='/characters-search'>Personagens</Link>
+        <Button id='menu' onClick={() => setShrink((s) => !s)}>
+          Menu
+        </Button>
+        <Button onClick={handleLogout}>Sair</Button>
+      </Wrapper>
+    </>
   );
 };
 
