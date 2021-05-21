@@ -1,19 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import Button from '../../components/Button';
+import TextInput from '../../components/TextInput';
 import LoginService from '../../services/login';
 import { loginAction } from '../../store/auth/actions';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  height: 100vh;
-`;
-const TextInput = styled.input``;
-const SubmitButton = styled.button``;
+import { Background, Container, Form, Link } from './styles';
 
 const Login: React.FC = () => {
   const [username, setUsername] = React.useState('');
@@ -30,19 +21,27 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Form role='login-form' onSubmit={handleSubmit}>
-      <TextInput
-        type='text'
-        placeholder='Usuário'
-        onChange={({ target }) => setUsername(target.value)}
-      />
-      <TextInput
-        type='password'
-        placeholder='Senha'
-        onChange={({ target }) => setPassword(target.value)}
-      />
-      <SubmitButton type='submit'>Entrar</SubmitButton>
-    </Form>
+    <>
+      <Background />
+      <Container>
+        <Form role='login-form' onSubmit={handleSubmit}>
+          <TextInput
+            type='text'
+            placeholder='Usuário'
+            onChange={({ target }) => setUsername(target.value)}
+          />
+          <TextInput
+            type='password'
+            placeholder='Senha'
+            onChange={({ target }) => setPassword(target.value)}
+          />
+          <Button type='submit'>Entrar</Button>
+          <div>
+            Não tem uma conta? <Link to='/signUp'>Clique aqui.</Link>
+          </div>
+        </Form>
+      </Container>
+    </>
   );
 };
 
