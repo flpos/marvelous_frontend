@@ -43,6 +43,9 @@ export const Form = styled.form`
 
   > * {
     margin-bottom: 18px;
+    &:first-child {
+      margin-top: 0px;
+    }
     &:last-child {
       margin-bottom: 0px;
     }

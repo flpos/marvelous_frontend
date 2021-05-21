@@ -25,6 +25,8 @@ const Login: React.FC = () => {
       <Background />
       <Container>
         <Form role='login-form' onSubmit={handleSubmit}>
+          <h1 style={{ textAlign: 'center' }}>MARVELOUS</h1>
+          <p>Encontre e guarde seus heróis favoritos!</p>
           <TextInput
             type='text'
             placeholder='Usuário'

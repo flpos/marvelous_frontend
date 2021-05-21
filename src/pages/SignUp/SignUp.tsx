@@ -1,18 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import styled from 'styled-components';
+import Button from '../../components/Button';
+import TextInput from '../../components/TextInput';
 import LoginService from '../../services/login';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  height: 100vh;
-`;
-const TextInput = styled.input``;
-const SubmitButton = styled.button``;
+import { Background, Container, Form } from '../Login/styles';
 
 const SignUp = () => {
   const [username, setUsername] = React.useState('');
@@ -28,25 +19,31 @@ const SignUp = () => {
     } catch (e) {}
   };
   return (
-    <Form role='login-form' onSubmit={handleSubmit}>
-      <SubmitButton type='button' onClick={() => history.go(-1)}>
-        Voltar
-      </SubmitButton>
+    <>
+      <Background />
+      <Container>
+        <Form role='login-form' onSubmit={handleSubmit}>
+          <h1 style={{ marginTop: 0 }}>Criação de usuário</h1>
 
-      <TextInput
-        type='text'
-        placeholder='Usuário'
-        onChange={({ target }) => setUsername(target.value)}
-        required
-      />
-      <TextInput
-        type='password'
-        placeholder='Senha'
-        onChange={({ target }) => setPassword(target.value)}
-        required
-      />
-      <SubmitButton type='submit'>Criar</SubmitButton>
-    </Form>
+          <TextInput
+            type='text'
+            placeholder='Usuário'
+            onChange={({ target }) => setUsername(target.value)}
+            required
+          />
+          <TextInput
+            type='password'
+            placeholder='Senha'
+            onChange={({ target }) => setPassword(target.value)}
+            required
+          />
+          <Button type='button' onClick={() => history.go(-1)}>
+            Voltar
+          </Button>
+          <Button type='submit'>Criar</Button>
+        </Form>
+      </Container>
+    </>
   );
 };
 
