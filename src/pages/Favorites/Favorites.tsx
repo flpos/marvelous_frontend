@@ -7,6 +7,7 @@ import ItemGrid from '../../components/ItemGrid';
 import FavoriteService from '../../services/favorite';
 import MarvelService from '../../services/marvel';
 import { CharResult, Result } from '../../services/types/marvel';
+import { toastError } from '../../utils/toastError';
 
 const limit = 6;
 
@@ -39,10 +40,12 @@ const Favorites = () => {
   const hasPrev = React.useMemo(() => !(offset - limit < 0), [offset]);
 
   const getFavorites = React.useCallback(() => {
-    FavoriteService.getFavorites().then(({ data }) => {
-      setFavoriteComics(data.filter((d: any) => d.type === 'comic'));
-      setFavoriteCharacters(data.filter((d: any) => d.type === 'character'));
-    });
+    FavoriteService.getFavorites()
+      .then(({ data }) => {
+        setFavoriteComics(data.filter((d: any) => d.type === 'comic'));
+        setFavoriteCharacters(data.filter((d: any) => d.type === 'character'));
+      })
+      .catch(toastError);
     setOffset(0);
   }, []);
 
@@ -69,9 +72,14 @@ const Favorites = () => {
           )
         );
       }
-
-      const comicsData = await Promise.all(comicDataPromise);
-      const charactersData = await Promise.all(characterDataPromise);
+      let comicsData: Result[] = [];
+      let charactersData: CharResult[] = [];
+      try {
+        comicsData = await Promise.all(comicDataPromise);
+        charactersData = await Promise.all(characterDataPromise);
+      } catch (e) {
+        toastError(e);
+      }
 
       setCharacterData(charactersData);
       setComicData(comicsData);
@@ -101,8 +109,12 @@ const Favorites = () => {
   };
 
   const deleteFavorite = async (id: number) => {
-    await FavoriteService.deleteFavorite(id);
-    getFavorites();
+    try {
+      await FavoriteService.deleteFavorite(id);
+      getFavorites();
+    } catch (e) {
+      toastError(e);
+    }
   };
 
   return (

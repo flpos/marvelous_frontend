@@ -10,6 +10,7 @@ import {
 import FavoriteService from '../../services/favorite';
 import MarvelService from '../../services/marvel';
 import { Item2, Result } from '../../services/types/marvel';
+import { toastError } from '../../utils/toastError';
 
 type ParamProps = { id?: string };
 
@@ -27,21 +28,25 @@ const ComicPage = () => {
 
   React.useEffect(() => {
     if (id) {
-      MarvelService.getComicById(parseInt(id)).then(({ data }) => {
-        setData(data.data.results[0]);
-        setCharacters(data.data.results[0].characters.items);
-      });
+      MarvelService.getComicById(parseInt(id))
+        .then(({ data }) => {
+          setData(data.data.results[0]);
+          setCharacters(data.data.results[0].characters.items);
+        })
+        .catch(toastError);
     }
   }, [id]);
 
   const getFavorites = React.useCallback(() => {
-    FavoriteService.getFavorites().then(({ data }) => {
-      setFavorites(
-        (data as any[])
-          .filter((data) => data.type === 'comic')
-          .map((data) => data.marvelId)
-      );
-    });
+    FavoriteService.getFavorites()
+      .then(({ data }) => {
+        setFavorites(
+          (data as any[])
+            .filter((data) => data.type === 'comic')
+            .map((data) => data.marvelId)
+        );
+      })
+      .catch(toastError);
   }, []);
 
   React.useEffect(() => {
@@ -49,10 +54,10 @@ const ComicPage = () => {
   }, [getFavorites]);
 
   const handleCreateFavorite = (id: string) => {
-    FavoriteService.createFavorite(id, 'comic');
+    FavoriteService.createFavorite(id, 'comic').catch(toastError);
   };
   const handleDeleteFavorite = (id: number) => {
-    FavoriteService.deleteFavorite(id);
+    FavoriteService.deleteFavorite(id).catch(toastError);
   };
 
   const handleFavoriteToggle = (isFavorite: boolean, id: number) => {

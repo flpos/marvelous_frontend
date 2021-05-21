@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import { PaginationButton } from '../../components/Button';
 import CharacterItem from '../../components/CharacterItem';
 import DisplayArea from '../../components/DisplayArea';
@@ -8,6 +9,7 @@ import ClearButton from '../../components/SearchBar/ClearButton';
 import FavoriteService from '../../services/favorite';
 import MarvelService from '../../services/marvel';
 import { CharResult } from '../../services/types/marvel';
+import { toastError } from '../../utils/toastError';
 
 const limit = 6;
 
@@ -27,12 +29,16 @@ const CharactesSearch = () => {
 
   const getData = React.useCallback(
     (offset: number) => {
-      MarvelService.getCharactersWithNameStartingWith(text, limit, offset).then(
-        ({ data }) => {
+      MarvelService.getCharactersWithNameStartingWith(text, limit, offset)
+        .then(({ data }) => {
           setTotal(data.data.total);
           setData(data.data.results);
-        }
-      );
+          if (data.data.total === 0)
+            toast.warn('A pesquisa não encontrou resultados');
+        })
+        .catch((e) => {
+          toastError(e);
+        });
     },
     [text]
   );

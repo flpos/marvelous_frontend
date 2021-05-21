@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import LoginService from '../../services/login';
+import { toastError } from '../../utils/toastError';
 import { Background, Container, Form } from '../Login/styles';
 
 const SignUp = () => {
@@ -16,7 +17,9 @@ const SignUp = () => {
     try {
       await LoginService.signUp(username, password);
       history.push('/login');
-    } catch (e) {}
+    } catch (e) {
+      toastError(e);
+    }
   };
   return (
     <>

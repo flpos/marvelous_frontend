@@ -1,9 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import LoginService from '../../services/login';
 import { loginAction } from '../../store/auth/actions';
+import { toastError } from '../../utils/toastError';
 import { Background, Container, Form, Link } from './styles';
 
 const Login: React.FC = () => {
@@ -17,7 +19,12 @@ const Login: React.FC = () => {
     try {
       const result = await LoginService.login(username, password);
       dispatch(loginAction(result.data.access_token));
-    } catch (e) {}
+    } catch (e) {
+      if (e.message === 'NETWORK ERROR') toast.error('Erro de conexão');
+      else {
+        toastError(e);
+      }
+    }
   };
 
   return (

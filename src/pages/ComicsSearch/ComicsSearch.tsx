@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 import { PaginationButton } from '../../components/Button';
 import ComicItem from '../../components/ComicItem';
 import DisplayArea from '../../components/DisplayArea';
@@ -8,6 +9,7 @@ import ClearButton from '../../components/SearchBar/ClearButton';
 import { default as FavoriteService } from '../../services/favorite';
 import MarvelService from '../../services/marvel';
 import { Result } from '../../services/types/marvel';
+import { toastError } from '../../utils/toastError';
 
 const limit = 6;
 
@@ -41,12 +43,17 @@ const ComicsSearch = () => {
 
   const getData = React.useCallback(
     (offset: number) => {
-      MarvelService.getComicsWithNameStartingWith(text, limit, offset).then(
-        ({ data }) => {
+      MarvelService.getComicsWithNameStartingWith(text, limit, offset)
+        .then(({ data }) => {
           setData(data.data.results);
           setTotal(data.data.total);
-        }
-      );
+          if (data.data.total === 0) {
+            toast.warn('A busca não encontrou resultados');
+          }
+        })
+        .catch((e) => {
+          toastError(e);
+        });
     },
     [text]
   );
@@ -59,10 +66,18 @@ const ComicsSearch = () => {
   };
 
   const handleCreateFavorite = (id: string) => {
-    FavoriteService.createFavorite(id, 'comic');
+    try {
+      FavoriteService.createFavorite(id, 'comic');
+    } catch (e) {
+      toastError(e);
+    }
   };
   const handleDeleteFavorite = (id: number) => {
-    FavoriteService.deleteFavorite(id);
+    try {
+      FavoriteService.deleteFavorite(id);
+    } catch (e) {
+      toastError(e);
+    }
   };
 
   const handleFavoriteToggle = (isFavorite: boolean, id: number) => {

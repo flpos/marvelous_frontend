@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import UserService from '../../services/user';
+import { toastError } from '../../utils/toastError';
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,14 +49,18 @@ const UserPanel = () => {
     event.preventDefault();
     try {
       UserService.updateUser(userId ?? 0, password);
-    } catch (e) {}
+    } catch (e) {
+      toastError(e);
+    }
   };
 
   React.useEffect(() => {
-    UserService.getUser().then(({ data }) => {
-      setUsername(data.username);
-      setUserId(data.id);
-    });
+    UserService.getUser()
+      .then(({ data }) => {
+        setUsername(data.username);
+        setUserId(data.id);
+      })
+      .catch(toastError);
   }, []);
 
   return (
