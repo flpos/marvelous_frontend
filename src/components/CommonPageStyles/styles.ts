@@ -7,12 +7,19 @@ export const Wrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 export const Image = styled.img`
   height: calc(100vh - 42px);
   position: absolute;
   right: 50%;
+  @media (max-width: 600px) {
+    position: static;
+    right: unset;
+  }
 `;
 
 export const Info = styled.section`
@@ -22,6 +29,13 @@ export const Info = styled.section`
   right: 0px;
   min-height: calc(100vh - 42px);
   background-color: #303030;
+
+  @media (max-width: 600px) {
+    position: static;
+    left: unset;
+    right: unset;
+    min-height: unset;
+  }
 `;
 
 export const FavButton = styled(Button)`

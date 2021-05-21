@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
+import UserService from '../../services/user';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,6 +21,9 @@ const Form = styled.form`
   background-color: white;
   padding: 42px;
   min-width: 600px;
+  @media (max-width: 600px) {
+    min-width: unset;
+  }
 
   > * {
     margin-bottom: 12px;
@@ -36,14 +40,24 @@ const Title = styled.h1`
 `;
 
 const UserPanel = () => {
+  const [userId, setUserId] = React.useState<number | null>(null);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const handleSubmit: React.FormEventHandler = async (event) => {
     event.preventDefault();
     try {
+      UserService.updateUser(userId ?? 0, password);
     } catch (e) {}
   };
+
+  React.useEffect(() => {
+    UserService.getUser().then(({ data }) => {
+      setUsername(data.username);
+      setUserId(data.id);
+    });
+  }, []);
+
   return (
     <Wrapper>
       <Form role='login-form' onSubmit={handleSubmit}>
@@ -52,6 +66,7 @@ const UserPanel = () => {
         <TextInput
           type='text'
           placeholder='Usuário'
+          value={username}
           onChange={({ target }) => setUsername(target.value)}
           required
           disabled
@@ -60,6 +75,7 @@ const UserPanel = () => {
         <TextInput
           type='password'
           placeholder='Senha'
+          value={password}
           onChange={({ target }) => setPassword(target.value)}
           required
         />
