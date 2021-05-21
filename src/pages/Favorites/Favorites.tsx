@@ -134,6 +134,19 @@ const Favorites = () => {
         </Button>
       </div>
       <DisplayArea>
+        {!hasData && (
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: 'white',
+            }}
+          >
+            <h1>Ainda não há favoritos</h1>
+          </div>
+        )}
         {hasData && (
           <PaginationButton
             disabled={!hasPrev}
